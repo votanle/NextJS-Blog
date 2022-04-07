@@ -15,12 +15,12 @@ export default function createblog({ user }) {
             return
         }
         try {
-            db.collection("posts").add({
+            db.collection("blogs").doc(user.uid).collection('blog').add({
              title,
              content,
              author: {name: auth.currentUser.displayName, id: auth.currentUser.uid},
-             createAt: serverTimestamp(),
-             updateAt: serverTimestamp(),
+             createdAt: serverTimestamp(),
+             updatedAt: serverTimestamp(),
             })
 
             M.toast({ html: 'Blog Created', classes: "green" })
@@ -42,7 +42,7 @@ export default function createblog({ user }) {
             <textarea
                 type="text"
                 value={content}
-                placeholder="content"
+                placeholder="Content"
                 onChange={(e) => setContent(e.target.value)}
 
             />

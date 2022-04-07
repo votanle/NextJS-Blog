@@ -7,6 +7,10 @@ export default function Login() {
     const [password, setPassword] = useState('')
     const handleSubmit = async (e) => {
         e.preventDefault()
+        if (!email || !password){
+            M.toast({html: 'please add all the fields',classes:"red"})    
+            return
+        }
         try {
             const result = await auth.signInWithEmailAndPassword(email, password)
             M.toast({ html: `welcome ${result.user.displayName}`, classes: "green" })

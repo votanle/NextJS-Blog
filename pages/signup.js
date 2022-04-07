@@ -10,6 +10,10 @@ export default function Signup() {
     const [dateofbirth, setDateofbirth] = useState('')
     const handleSubmit = async (e) => {
         e.preventDefault()
+        if (!name || !email|| !password || !dateofbirth){
+            M.toast({html: 'please add all the fields',classes:"red"})    
+            return
+        }
         try {
             const result = await auth.createUserWithEmailAndPassword(email, password)
             await result.user.updateProfile({
