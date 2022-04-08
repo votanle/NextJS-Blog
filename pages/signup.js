@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Link from 'next/Link'
 import {auth, db} from '../firebase'
 
+
 var md5 = require('md5');
 export default function Signup() {
     const [name, setName] = useState('')
@@ -28,7 +29,7 @@ export default function Signup() {
                 password: md5(password)
             })
 
-       M.toast({html: `welcome ${result.user.displayName}`,classes:"green"})  
+       M.toast({html: `welcome ${result.user.displayName}`,classes:"green"}) 
        }catch(err){
         M.toast({html: err.message,classes:"red"})    
        }
@@ -36,7 +37,7 @@ export default function Signup() {
     }
   return (
     <div className="container center">
-        <h3>Login Form!</h3>
+        <h3>Sign Up Form!</h3>
         <form onSubmit = {(e) => handleSubmit(e)}>
             <div className="input-field">
                 <input type="text" placeholder="Full Name" value ={name} onChange ={e => setName(e.target.value)} />
