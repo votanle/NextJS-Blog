@@ -1,6 +1,7 @@
 import { db } from '../firebase'
 import { useState } from 'react'
 import Link from 'next/link'
+import firebase from'firebase/app'
 
 
 export default function Home({ Allblogs }) {

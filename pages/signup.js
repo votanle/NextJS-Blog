@@ -18,10 +18,10 @@ export default function Signup() {
         try {
             const result = await auth.createUserWithEmailAndPassword(email, password)
             await result.user.updateProfile({
-                displayName: name
+                 name,
             })
             db.collection("users").doc(result.user.uid).set({
-                name:result.user.displayName,
+                name:result.user.name,
                 email:result.user.email,
                 dateofbirth:dateofbirth,
                 createAt: new Date(),

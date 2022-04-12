@@ -11,7 +11,7 @@ export default function NavBar({ user }) {
                         <>
 
                             <li><Link href="/createblog"><a>Create Blog</a></Link></li>
-                            <li><Link href="/userinfo"><a>{auth.currentUser.displayName}</a></Link></li>
+                            <li><Link href="/userinfo"><a>PROFILE</a></Link></li>
                             <li> <button className="btn red" onClick={() => auth.signOut()}>Logout</button></li>
                         </>
 
