@@ -1,32 +1,88 @@
 import { db } from '../firebase'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import firebase from'firebase/app'
 
 
-export default function Home({ Allblogs }) {
-  const [blogs, setblogs] = useState(Allblogs)
+export default function Home() {
+  const [userBlogs, setUserBlogs] = useState([])
+  const [blogs, setBlogs] = useState([])
+
+  useEffect( () => {
+    const getAllUserBlogs = db.collectionGroup('blog')
+    .orderBy('createdAt', 'desc')
+    .onSnapshot((snapshot) => {
+      let userBlogs = []
+      snapshot.forEach((doc) => {
+        userBlogs.push({
+          uid: doc.ref.parent.parent.id,
+          upid: doc.id,
+          data: { title: doc.data().title, content: doc.data().content },
+        })
+      })
+      setUserBlogs(userBlogs)
+    })
+
+}, [])
+
+useEffect(() => {
+  if (!userBlogs.length){
+    return
+  }
+  
+    const getAllUser = db.collection('users').get().then((querySnapshot) =>{
+     let users = []
+     querySnapshot.forEach((doc) => {
+       users.push({
+         id: doc.id,
+         name: doc.data().name,
+       })
+
+     })
+     return Promise.resolve(users)
+   })
+   getAllUser.then((users)=> {
+    let uids = userBlogs.map((userBlogs) => {
+      return userBlogs.uid
+    })
+    let resultUser = users.filter((user) => {
+      return uids.includes(user.id)
+    })
+    let userBlogList = []
+    userBlogs.map((blog) => {
+      const users = resultUser.find((u) => {
+        return u.id === blog.uid
+      })
+      userBlogList.push({
+        id: blog.upid,
+        author: users.name,
+        title: blog.data.title,
+        content: blog.data.content,
+      })
+    })
+    setBlogs(userBlogList)
+   })
+return getAllUser
+}, [userBlogs])
+
   return (
     <div className="center">
-      {blogs.map(blog => {
-        return (
-          <div className="card" key={blog.createdAt}>
-            <div>
-              <h1 className="card-title card #ffc107 amber">Title: {blog.title}</h1>
-            </div>
-            <div className="card-content">
+     {blogs.map((blog) => (
+      <div className="card" key={blog.id}>
+             <div>
+               <h1 className="card-title card #ffc107 amber">Title: {blog.title}</h1>
+             </div>
+             <div className="card-content">
              
-              <p>{blog.content}</p>
+               <p>{blog.content}</p>
 
-            </div >
-            <div className="format">
-              <h5 className=" #aeea00 lime accent-4">Author: {blog.author.name}</h5>
-            </div>
+             </div >
+             <div className="format">
+               <h5 className=" #aeea00 lime accent-4">Author: {blog.author}</h5>
+             </div>
             
-          </div>
-        )
-      })}
-
+           </div>
+     ))}
       <style jsx>
         {`    
               .card{
@@ -44,37 +100,5 @@ export default function Home({ Allblogs }) {
     </div>
   )
  }         
-export async function getServerSideProps(context) {
-  const querySnap = await db.collectionGroup('blog').orderBy('createdAt', "desc")
-    .get()
-  const Allblogs = querySnap.docs.map(docSnap => {
-    return {
-      ...docSnap.data(),
-      createdAt: docSnap.data().createdAt.toMillis(),
-      updatedAt: docSnap.data().updatedAt.toMillis(),
-      id: docSnap.id
-    }
-  })
-  return {
-    props: { Allblogs }, // will be passed to the page component as props
-  }
-}
 
-// const loadMore = async () => {
-  //   const last = blogs[blogs.length - 1]
-  //   const res = await db.collection('blogs')
-  //     .orderBy('createdAt', 'desc')
-  //     .startAfter(new Date(last.createdAt))
-  //     .get()
-    // const newblogs = res.docs.map(docSnap => {
-    //   return {
-    //     ...docSnap.data(),
-    //     createdAt: docSnap.data().createdAt.toMillis(),
-    //     id: docSnap.id
-    //   }
-    // })
-    // setblogs(blogs.concat(newblogs))
-    // if (newblogs.length < 3) {
-    //   setEnd(true)
-    // }
 

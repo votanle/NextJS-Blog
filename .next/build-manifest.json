@@ -35,11 +35,6 @@
       "static/chunks/main.js",
       "static/chunks/pages/createblog.js"
     ],
-    "/login": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/login.js"
-    ],
     "/userinfo": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",

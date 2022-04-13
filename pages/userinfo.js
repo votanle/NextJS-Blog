@@ -25,7 +25,7 @@ export default function userInfo({user}) {
             return
         }
         
-        db.collection("users").doc(user.uid).update({
+        db.collection("users").doc(user.id).update({
             name,
             email,
             dateofbirth,

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
-// import { storage, db, serverTimestamp } from '../firebase'
-import Link from 'next/link'
+import Router from 'next/router'
 
 import {auth, db, serverTimestamp} from '../firebase'
 
@@ -18,12 +17,12 @@ export default function createblog({ user }) {
             db.collection("blogs").doc(user.uid).collection('blog').add({
              title,
              content,
-             author: {name: auth.currentUser.displayName, id: auth.currentUser.uid},
              createdAt: serverTimestamp(),
              updatedAt: serverTimestamp(),
             })
 
             M.toast({ html: 'Blog Created', classes: "green" })
+            Router.push('/')
                 } catch (err) {
                     M.toast({ html: 'Error creating blog', classes: "red" })
                 }
@@ -46,7 +45,7 @@ export default function createblog({ user }) {
                 onChange={(e) => setContent(e.target.value)}
 
             />
-            <Link href="/"><button className="btn #fb8c00 orange darken-1" onClick={() => createPost()}>Submit Post</button></Link>
+            <button className="btn #fb8c00 orange darken-1" onClick={() => createPost()}>Submit Post</button>
 
             <style jsx>
                 {`

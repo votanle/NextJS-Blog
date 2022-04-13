@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Link from 'next/Link'
 import {auth, db} from '../firebase'
-
+import Router from 'next/Router'
 
 var md5 = require('md5');
 export default function Signup() {
@@ -11,17 +11,17 @@ export default function Signup() {
     const [dateofbirth, setDateofbirth] = useState('')
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if (!name || !email|| !password || !dateofbirth){
+        if (!name || !email|| !password){
             M.toast({html: 'please add all the fields',classes:"red"})    
             return
         }
         try {
             const result = await auth.createUserWithEmailAndPassword(email, password)
             await result.user.updateProfile({
-                 name,
+                 displayName:name
             })
             db.collection("users").doc(result.user.uid).set({
-                name:result.user.name,
+                name:name,
                 email:result.user.email,
                 dateofbirth:dateofbirth,
                 createAt: new Date(),
@@ -29,7 +29,8 @@ export default function Signup() {
                 password: md5(password)
             })
 
-       M.toast({html: `welcome ${result.user.displayName}`,classes:"green"}) 
+       M.toast({html: `Welcome ${name}`,classes:"green"})
+       Router.push('/') 
        }catch(err){
         M.toast({html: err.message,classes:"red"})    
        }
@@ -47,7 +48,7 @@ export default function Signup() {
 
             </div>
             <button type="submit" className="btn #fb8c00 orange darken-1">Login</button>
-            <Link href="/login"><a><h5>Already have an account.</h5></a></Link>
+            <Link href="/login"><a><h5>Already have an account!</h5></a></Link>
         </form>
      
     </div>
