@@ -47,7 +47,7 @@ export default function Signup() {
                 <input type="date" placeholder="dateofbirth" value ={dateofbirth} onChange ={e => setDateofbirth(e.target.value)} />
 
             </div>
-            <button type="submit" className="btn #fb8c00 orange darken-1">Login</button>
+            <button type="submit" className="btn #fb8c00 orange darken-1">Sign Up</button>
             <Link href="/login"><a><h5>Already have an account!</h5></a></Link>
         </form>
      

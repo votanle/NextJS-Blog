@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { auth, db } from '../firebase'
 import 'firebase/firestore'
+import Router from "next/router";
 
 
 export default function userInfo({user}) {
@@ -25,13 +26,14 @@ export default function userInfo({user}) {
             return
         }
         
-        db.collection("users").doc(user.id).update({
-            name,
-            email,
-            dateofbirth,
+        db.collection("users").doc(user.uid).update({
+            name: name,
+            email: email,
+            dateofbirth: dateofbirth,
             updatedAt: new Date(),
         })
-        alert('Updated successfully')
+        M.toast({ html: `Update Successfully!!!  ${name}`, classes: "green" })
+        Router.push('/');
     }
 
  
