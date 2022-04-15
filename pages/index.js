@@ -4,30 +4,32 @@ import Link from 'next/link'
 
 
 
-export default function Home  ({ }) {
-  const [userBlogs, setUserBlogs] = useState([])
-  const [blogs, setBlogs] = useState([])
+export default function Home({ }) {
+  const [userPosts, setUserPosts] = useState([])
+  const [posts, setPosts] = useState([])
+  
+
 
 
   useEffect(() => {
- db.collectionGroup('blog')
+    db.collectionGroup('userPosts')
       .orderBy('createdAt', 'desc')
       .onSnapshot((snapshot) => {
-        let userBlogs = []
+        let userPosts = []
         snapshot.forEach((doc) => {
-          userBlogs.push({
+          userPosts.push({
             uid: doc.ref.parent.parent.id,
             upid: doc.id,
             data: { title: doc.data().title, content: doc.data().content },
           })
         })
-        setUserBlogs(userBlogs)
+        setUserPosts(userPosts)
       })
 
   }, [])
 
   useEffect(() => {
-    if (!userBlogs.length) {
+    if (!userPosts.length) {
       return
     }
 
@@ -43,53 +45,55 @@ export default function Home  ({ }) {
       return Promise.resolve(users)
     })
     getAllUsers.then((users) => {
-      let uids = userBlogs.map((userBlogs) => {
-        return userBlogs.uid
+      let uids = userPosts.map((userPost) => {
+        return userPost.uid
       })
       let resultUser = users.filter((user) => {
         return uids.includes(user.id)
       })
-      let userBlogList = []
-      userBlogs.map((blog) => {
+      let userPostList = []
+      userPosts.map((post) => {
         const users = resultUser.find((user) => {
-          return user.id === blog.uid
-        })  
+          return user.id === post.uid
+        })
 
-        userBlogList.push({
-          id: blog.upid,
+        userPostList.push({
+          id: post.upid,
           author: users.name,
-          title: blog.data.title,
-          content: blog.data.content,
+          title: post.data.title,
+          content: post.data.content,
         })
       })
-      setBlogs(userBlogList)
+      setPosts(userPostList)
     })
 
-  }, [userBlogs])
+  }, [userPosts])
+
+  
+  
 
   return (
     <div className="center">
 
-      {blogs.map((blog) => (
-        <div className="card" key={blog.id}>
+      {posts.map((post) => (
+        <div className="card" key={post.id}>
           <div>
-            <h1 className="card-title card #ffc107 amber">Title: {blog.title}</h1>
+            <h3> {post.title}</h3>
           </div>
           <div className="card-content">
 
-            <p>{blog.content}</p>
+           {post.content}
 
           </div >
           <div className="format">
-            <h5 className=" #aeea00 lime accent-4">Author: {blog.author}</h5>
+            <h5>@{post.author}</h5>
           </div>
-
         </div>
       ))}
       <style jsx>
         {`    
               .card{
-                max-width:500px;
+                max-width:700px;
                 margin:22px auto;
               }
               p{

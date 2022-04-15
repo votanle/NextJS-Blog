@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Router from 'next/router'
 
-import {auth, db, serverTimestamp} from '../firebase'
+import { db, serverTimestamp} from '../firebase'
 
 export default function createblog({ user }) {
     const [title, setTitle] = useState('')
@@ -14,7 +14,7 @@ export default function createblog({ user }) {
             return
         }
         try {
-            db.collection("blogs").doc(user.uid).collection('blog').add({
+            db.collection("posts").doc(user.uid).collection('userPosts').add({
              title,
              content,
              createdAt: serverTimestamp(),
@@ -43,7 +43,6 @@ export default function createblog({ user }) {
                 value={content}
                 placeholder="Content"
                 onChange={(e) => setContent(e.target.value)}
-
             />
             <button className="btn #fb8c00 orange darken-1" onClick={() => createPost()}>Submit Post</button>
 
