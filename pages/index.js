@@ -1,15 +1,12 @@
 import { db } from '../firebase'
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
+import ShowPost from './posts/ShowPost'
 
 
 
-export default function Home({ }) {
+export default function Home({ post, user }) {
   const [userPosts, setUserPosts] = useState([])
   const [posts, setPosts] = useState([])
-  
-
-
 
   useEffect(() => {
     db.collectionGroup('userPosts')
@@ -20,7 +17,12 @@ export default function Home({ }) {
           userPosts.push({
             uid: doc.ref.parent.parent.id,
             upid: doc.id,
-            data: { title: doc.data().title, content: doc.data().content },
+            data: {
+              title: doc.data().title,
+              content: doc.data().content,
+              createdAt: doc.data().createdAt.toDate().toDateString(),
+              createAtTime: doc.data().createdAt.toDate().toLocaleTimeString("en-US")
+            },
           })
         })
         setUserPosts(userPosts)
@@ -62,6 +64,8 @@ export default function Home({ }) {
           author: users.name,
           title: post.data.title,
           content: post.data.content,
+          createdAt: post.data.createdAt,
+          createAtTime: post.data.createAtTime,
         })
       })
       setPosts(userPostList)
@@ -69,25 +73,13 @@ export default function Home({ }) {
 
   }, [userPosts])
 
-  
-  
-
   return (
     <div className="center">
 
       {posts.map((post) => (
         <div className="card" key={post.id}>
-          <div>
-            <h3> {post.title}</h3>
-          </div>
-          <div className="card-content">
-
-           {post.content}
-
-          </div >
-          <div className="format">
-            <h5>@{post.author}</h5>
-          </div>
+          <ShowPost post={post} user={user} />
+          
         </div>
       ))}
       <style jsx>

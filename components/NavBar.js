@@ -10,8 +10,8 @@ export default function NavBar({ user }) {
                     {user ?
                         <>
 
-                            <li><Link href="/createblog"><a>Create Blog</a></Link></li>
-                            <li><Link href="/userinfo"><a>PROFILE</a></Link></li>
+                            <li><Link href="posts/createblog"><a>Create Blog</a></Link></li>
+                            <li><Link href="users/userinfo"><a>PROFILE</a></Link></li>
                             <li> <button className="btn red" onClick={() => auth.signOut()}>Logout</button></li>
                         </>
 
