@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { db, serverTimestamp } from '../firebase'
+import { db, serverTimestamp } from '../../firebase'
 import Router from "next/router";
 
 
@@ -20,7 +20,7 @@ export default function userInfo({user}) {
     const handleSubmitUpdate = async (e) => {
         e.preventDefault()
         if (!name || !email|| !dateofbirth){
-            M.toast({html: 'please add all the fields',classes:"red"})    
+            M.toast({html: 'Please add all the fields',classes:"red"})    
             return
         }
         

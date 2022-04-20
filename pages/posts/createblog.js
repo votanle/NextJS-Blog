@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Router from 'next/router'
 
-import { db, serverTimestamp} from '../../firebase'
+import { db } from '../../firebase'
 
 export default function createblog({ user }) {
     const [title, setTitle] = useState('')
@@ -17,8 +17,8 @@ export default function createblog({ user }) {
             db.collection("posts").doc(user.uid).collection('userPosts').add({
              title,
              content,
-             createdAt: serverTimestamp(),
-             updatedAt: serverTimestamp(),
+             createdAt: new Date(),
+             updatedAt: new Date(),
             })
 
             M.toast({ html: 'Blog Created', classes: "green" })

@@ -3,29 +3,36 @@ import { auth } from '../firebase'
 export default function NavBar({ user }) {
 
     return (
-        <nav>
-            <div className="nav-wrapper #fb8c00 orange darken-1">
-                <Link href="/"><a className="brand-logo">Blogger</a></Link>
-                <ul id="nav-mobile" className=" right sidenav-trigger">
-                    {user ?
-                        <>
+        <div class="navbar-fixed">
+            <nav>
+                <div className="nav-wrapper #fb8c00 orange darken-1">
+                    <Link href="/"><a className="brand-logo">Social Network</a></Link>
+                    <ul id="nav-mobile" className=" right sidenav-trigger">
+                        {/* <div class="input-field">
+                            <input id="search" type="search" required />
+                                <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                                <i class="material-icons">close</i>
+                        </div> */}
+                        {user ?
+                            <>
 
-                            <li><Link href="posts/createblog"><a>Create Blog</a></Link></li>
-                            <li><Link href="users/userinfo"><a>PROFILE</a></Link></li>
-                            <li> <button className="btn red" onClick={() => auth.signOut()}>Logout</button></li>
-                        </>
+                                <li><Link href="/posts/createblog"><a>Create Blog</a></Link></li>
+                                <li><Link href="/users/userinfo"><a>PROFILE</a></Link></li>
+                                <li> <button className="btn red" onClick={() => auth.signOut()}>Logout</button></li>
+                            </>
 
-                        :
-                        <>
-                            <li><Link href="/login"><a>Login</a></Link></li>
-                            <li><Link href="/signup"><a>Signup</a></Link></li>
+                            :
+                            <>
+                                <li><Link href="/login"><a>Login</a></Link></li>
+                                <li><Link href="/signup"><a>Signup</a></Link></li>
 
-                        </>
-                    }
+                            </>
+                        }
 
-                </ul>
-            </div>
-        </nav>
+                    </ul>
+                </div>
+            </nav>
+        </div>
 
     )
 }

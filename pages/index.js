@@ -4,12 +4,12 @@ import ShowPost from './posts/ShowPost'
 
 
 
-export default function Home({ post, user }) {
+export default function Home({ user }) {
   const [userPosts, setUserPosts] = useState([])
   const [posts, setPosts] = useState([])
 
   useEffect(() => {
-    db.collectionGroup('userPosts')
+    const getAllUserPosts = db.collectionGroup('userPosts')
       .orderBy('createdAt', 'desc')
       .onSnapshot((snapshot) => {
         let userPosts = []
@@ -27,7 +27,7 @@ export default function Home({ post, user }) {
         })
         setUserPosts(userPosts)
       })
-
+      return getAllUserPosts
   }, [])
 
   useEffect(() => {
