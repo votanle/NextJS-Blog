@@ -15,8 +15,6 @@ export default function commentsShow({ postId }) {
           comments.push({
             id: doc.id,
             data: doc.data(),
-            // createdAt: doc.data().createdAt.toDate().toDateString(),
-            // createAtTime: doc.data().createdAt.toDate().toLocaleTimeString("en-US")
           })
         })
         const Allcomment = await Promise.all(
@@ -24,11 +22,12 @@ export default function commentsShow({ postId }) {
             const UserComment = {
               id: comment.id,
               content: comment.data.content,
+              createdAt: comment.data.createdAt.toDate().toDateString(),
+              createAtTime: comment.data.createdAt.toDate().toLocaleTimeString(),
               author: (
                 await db.doc(comment.data.userRef.path).get()
               ).data().name,
-              // createdAt: comment.data.createdAt,
-              // createAtTime: comment.data.createAtTime,
+
             }
             return UserComment
           })
@@ -42,20 +41,28 @@ export default function commentsShow({ postId }) {
   return (
     <div className="center">
       <div className="left-align rootdiv">
-
         {postComments.map((comment) => (
-          <h6 key={comment.id}><b>{comment.author}:</b> {comment.content}</h6>
-
+          <div key={comment.id}>
+            <h6><span>{comment.author} </span><b>@{comment.createAtTime}, {comment.createdAt}</b></h6>
+            <p>{comment.content}</p>
+          </div>
         ))}
       </div>
-      <style jsx>
-        {`
-              p{
-                display: -webkit-box;
-                overflow: hidden;
-                -webkit-line-clamp: 1;
-                -webkit-box-orient: vertical;
-              }
+      <style jsx global>
+        {`        b {
+                    font-weight: 600;
+                    font-size:12px;
+                  }
+                  span {
+                    font-size:20px;
+                    font-weight: 500;
+                    color: orange;
+                  }
+                  p {
+                    font-size: large;
+                    text-indent: 24px;
+                  
+                  }
                  .rootdiv{
                      margin:30px auto;
                      max-width:600px;

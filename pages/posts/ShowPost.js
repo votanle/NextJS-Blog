@@ -13,10 +13,10 @@ export default function ShowPost({post, user}) {
             {post.content}
 
           </div >
-          <div className="format">
+          <div>
             <h5>@{post.author}</h5>
           </div>
-          <div className="format">
+          <div >
             <b>{post.createAtTime}, {post.createdAt}</b>
           </div>
           <div>
